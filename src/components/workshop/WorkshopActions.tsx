@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useApp } from "@/context/AppContext";
 import Button from "@/components/ui/Button";
 
 interface WorkshopActionsProps {
@@ -14,29 +14,49 @@ export default function WorkshopActions({
   availableSeats,
   totalSeats,
 }: WorkshopActionsProps) {
-  const [isSaved, setIsSaved] = useState(false);
+  const { state, dispatch } = useApp();
+
+  const isSaved = state.savedSessions.some((s) => s.workshopId === workshopId);
+  const isRegistered = state.registrations.some((r) => r.workshopId === workshopId);
   const seatsLow = availableSeats <= 5;
   const soldOut = availableSeats === 0;
 
   function handleRegister() {
-    alert("Registration coming soon!");
+    if (isRegistered) {
+      dispatch({ type: "UNREGISTER_WORKSHOP", payload: { workshopId } });
+    } else {
+      dispatch({
+        type: "REGISTER_WORKSHOP",
+        payload: {
+          id: `reg-${Date.now()}`,
+          workshopId,
+          name: "Guest User",
+          email: "guest@mentorhub.com",
+          registeredAt: new Date().toISOString(),
+        },
+      });
+    }
   }
 
   function handleSave() {
-    setIsSaved(!isSaved);
+    if (isSaved) {
+      dispatch({ type: "UNSAVE_WORKSHOP", payload: { workshopId } });
+    } else {
+      dispatch({ type: "SAVE_WORKSHOP", payload: { workshopId } });
+    }
   }
 
   return (
     <div className="p-4 bg-gray-50 rounded-lg mb-8">
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
         <Button
-          variant="primary"
+          variant={isRegistered ? "danger" : "primary"}
           size="lg"
-          disabled={soldOut}
+          disabled={soldOut && !isRegistered}
           onClick={handleRegister}
           className="flex-1"
         >
-          {soldOut ? "Sold Out" : "Register Now"}
+          {isRegistered ? "Cancel Registration" : soldOut ? "Sold Out" : "Register Now"}
         </Button>
 
         <button
@@ -49,22 +69,14 @@ export default function WorkshopActions({
         >
           {isSaved ? (
             <>
-              <svg
-                className="w-5 h-5 fill-current"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
               Saved
             </>
           ) : (
             <>
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -79,12 +91,7 @@ export default function WorkshopActions({
       </div>
 
       <div className="flex items-center gap-2">
-        <svg
-          className="w-4 h-4 text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
+        <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -92,11 +99,7 @@ export default function WorkshopActions({
             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
           />
         </svg>
-        <span
-          className={`text-sm font-medium ${
-            seatsLow ? "text-red-600" : "text-gray-600"
-          }`}
-        >
+        <span className={`text-sm font-medium ${seatsLow ? "text-red-600" : "text-gray-600"}`}>
           {availableSeats} of {totalSeats} seats available
         </span>
       </div>
