@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Badge from "@/components/ui/Badge";
+import WorkshopActions from "@/components/workshop/WorkshopActions";
 import { workshops, mentors } from "@/data";
 
 export default async function WorkshopDetailPage({
@@ -39,8 +40,6 @@ export default async function WorkshopDetailPage({
     day: "numeric",
     year: "numeric",
   }).format(new Date(workshop.date));
-
-  const seatsLow = workshop.availableSeats <= 5;
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -118,28 +117,11 @@ export default async function WorkshopDetailPage({
             </span>
           </div>
 
-          <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg mb-8">
-            <svg
-              className="w-5 h-5 text-gray-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-            <span
-              className={`text-sm font-medium ${
-                seatsLow ? "text-red-600" : "text-gray-700"
-              }`}
-            >
-              {workshop.availableSeats} of {workshop.totalSeats} seats available
-            </span>
-          </div>
+          <WorkshopActions
+            workshopId={workshop.id}
+            availableSeats={workshop.availableSeats}
+            totalSeats={workshop.totalSeats}
+          />
 
           <div className="mb-8">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
