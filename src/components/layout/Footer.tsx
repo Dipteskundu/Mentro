@@ -11,7 +11,7 @@ export default function Footer() {
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">M</span>
               </div>
-              <span className="text-xl font-bold text-white">MentorHub</span>
+              <span className="text-xl font-bold text-white">Mentro</span>
             </Link>
             <p className="mt-4 text-sm text-gray-400">
               Discover workshops, mentorship sessions, and accelerate your learning journey.
@@ -41,14 +41,14 @@ export default function Footer() {
               Contact
             </h3>
             <ul className="mt-4 space-y-2 text-sm text-gray-400">
-              <li>support@mentorhub.com</li>
-              <li>MentorHub Inc.</li>
+              <li>support@Mentro.com</li>
+              <li>Mentro Inc.</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} MentorHub. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Mentro. All rights reserved.</p>
         </div>
       </div>
     </footer>
