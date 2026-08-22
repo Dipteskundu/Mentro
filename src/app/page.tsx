@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -6,9 +7,19 @@ export default function Home() {
       <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
           <div className="text-center">
+            <Image
+              src="/MentroLogo.png"
+              alt="Mentro"
+              width={80}
+              height={80}
+              className="mx-auto mb-6 rounded-xl"
+            />
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
-              Accelerate Your Learning Journey
+              Welcome to Mentro
             </h1>
+            <p className="mt-2 text-lg text-blue-600 font-medium">
+              LEARN CONNECT GROW
+            </p>
             <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
               Discover technical workshops, mentorship sessions, and bootcamps
               from industry experts. Build skills that matter.
