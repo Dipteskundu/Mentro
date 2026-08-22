@@ -3,8 +3,9 @@
 import { useState } from "react";
 import RegisteredSessions from "@/components/dashboard/RegisteredSessions";
 import SavedSessions from "@/components/dashboard/SavedSessions";
+import UpcomingSchedule from "@/components/dashboard/UpcomingSchedule";
 
-type Tab = "registered" | "saved";
+type Tab = "registered" | "saved" | "upcoming";
 
 export default function MyLearningPage() {
   const [activeTab, setActiveTab] = useState<Tab>("registered");
@@ -42,12 +43,23 @@ export default function MyLearningPage() {
               >
                 Saved Sessions
               </button>
+              <button
+                onClick={() => setActiveTab("upcoming")}
+                className={`py-4 text-sm font-medium border-b-2 transition-colors ${
+                  activeTab === "upcoming"
+                    ? "border-blue-600 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                Upcoming
+              </button>
             </nav>
           </div>
 
           <div className="p-6">
             {activeTab === "registered" && <RegisteredSessions />}
             {activeTab === "saved" && <SavedSessions />}
+            {activeTab === "upcoming" && <UpcomingSchedule />}
           </div>
         </div>
       </div>
