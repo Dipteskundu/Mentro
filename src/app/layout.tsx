@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mentro - LEARN CONNECT GROW",
+  title: "Mentro - Workshop & Mentorship Discovery",
   description: "Discover technical workshops, mentorship sessions, and accelerate your learning journey.",
 };
 

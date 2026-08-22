@@ -28,6 +28,7 @@ export default function Navbar() {
                 LEARN CONNECT GROW
               </span>
             </div>
+            <span className="text-xl font-bold text-gray-900">Mentro</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
