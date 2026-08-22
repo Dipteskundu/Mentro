@@ -4,6 +4,7 @@ export interface Workshop {
   description: string;
   mentorId: string;
   topic: string;
+  category: string;
   level: "Beginner" | "Intermediate" | "Advanced";
   sessionType: "Workshop" | "Mentorship" | "Bootcamp" | "Webinar";
   date: string;
@@ -11,7 +12,11 @@ export interface Workshop {
   totalSeats: number;
   availableSeats: number;
   learningOutcomes: string[];
-  imageUrl?: string;
+  imageUrl: string;
+  price: number;
+  rating: number;
+  reviewCount: number;
+  enrolledCount: number;
 }
 
 export interface Mentor {
@@ -44,7 +49,8 @@ export interface AppState {
 
 export interface FilterState {
   search: string;
-  topic: string;
-  level: string;
-  sessionType: string;
+  categories: string[];
+  levels: string[];
+  priceFilter: "all" | "free" | "paid";
+  minRating: number;
 }
