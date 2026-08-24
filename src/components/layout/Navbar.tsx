@@ -147,9 +147,13 @@ export default function Navbar() {
               height={28}
               className="rounded-lg transition-transform duration-200 group-hover:scale-105"
             />
-            <span className="text-sm font-bold text-gray-900 dark:text-white tracking-tight">
-              Mentro
-            </span>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-gray-900">Mentro</span>
+              <span className="text-xs text-gray-500 hidden sm:block">
+                LEARN CONNECT GROW
+              </span>
+            </div>
+            <span className="text-xl font-bold text-gray-900">Mentro</span>
           </Link>
 
           {/* Right: Theme Toggle + Hamburger */}

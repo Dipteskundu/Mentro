@@ -41,6 +41,7 @@ export default function Footer() {
                 <span className="text-xl font-bold text-gray-900">Mentro</span>
                 <span className="text-xs text-gray-400">LEARN CONNECT GROW</span>
               </div>
+              <span className="text-xl font-bold text-white">Mentro</span>
             </Link>
             <p className="mt-4 text-sm text-gray-500 leading-relaxed">
               Discover workshops, mentorship sessions, and accelerate your
@@ -118,23 +119,12 @@ export default function Footer() {
 
           {/* Column 4 — Support */}
           <div>
-            <h3 className="text-gray-900 font-semibold text-sm mb-4">Support</h3>
-            <ul className="space-y-3">
-              {[
-                { label: "Help Center", href: "#" },
-                { label: "Contact Us", href: "#" },
-                { label: "FAQ", href: "#" },
-                { label: "Report an Issue", href: "#" },
-              ].map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-500 hover:text-gray-900 text-sm transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">
+              Contact
+            </h3>
+            <ul className="mt-4 space-y-2 text-sm text-gray-400">
+              <li>support@Mentro.com</li>
+              <li>Mentro Inc.</li>
             </ul>
           </div>
         </div>
