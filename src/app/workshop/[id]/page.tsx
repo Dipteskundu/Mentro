@@ -23,19 +23,24 @@ export default async function WorkshopDetailPage({
 
   if (!workshop) {
     return (
-      <main className="min-h-screen bg-gray-50">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+          <div className="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
             Workshop not found
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-500 mb-8">
             The workshop you&apos;re looking for doesn&apos;t exist or has been removed.
           </p>
           <Link
             href="/explore"
-            className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium"
+            className="inline-flex items-center px-6 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-hover transition-colors shadow-lg shadow-brand/25"
           >
-            <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Back to Explore
@@ -59,8 +64,8 @@ export default async function WorkshopDetailPage({
   );
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="relative h-64 sm:h-80 lg:h-96 w-full">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <div className="relative h-72 sm:h-80 lg:h-96 w-full overflow-hidden">
         <Image
           src={workshop.imageUrl}
           alt={workshop.title}
@@ -69,27 +74,27 @@ export default async function WorkshopDetailPage({
           priority
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
         <div className="absolute inset-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href="/explore"
-            className="inline-flex items-center text-sm text-white/90 hover:text-white font-medium mt-6"
+            className="inline-flex items-center text-sm text-white/80 hover:text-white font-medium mt-6 transition-colors"
           >
             <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Back to Explore
           </Link>
-          <div className="absolute bottom-6 left-4 sm:left-6 lg:left-8 right-4 sm:right-6 lg:right-8">
-            <span className={`inline-block px-3 py-1 text-sm font-semibold rounded-full ${categoryColors[workshop.category] || "bg-gray-100 text-gray-800"} mb-3`}>
+          <div className="absolute bottom-8 left-4 sm:left-6 lg:left-8 right-4 sm:right-6 lg:right-8">
+            <span className={`inline-block px-3 py-1.5 text-sm font-semibold rounded-xl ${categoryColors[workshop.category] || "bg-gray-100 text-gray-800"} mb-3`}>
               {workshop.category}
             </span>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
               {workshop.title}
             </h1>
             <div className="flex flex-wrap items-center gap-3 text-sm text-white/90">
               <StarRating rating={workshop.rating} reviewCount={workshop.reviewCount} size="md" />
-              <span>·</span>
+              <span className="text-white/40">·</span>
               <span>{workshop.enrolledCount.toLocaleString()} students</span>
             </div>
           </div>
@@ -98,75 +103,61 @@ export default async function WorkshopDetailPage({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          <div className="flex-1 space-y-8">
-            <section className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">About this course</h2>
+          <div className="flex-1 space-y-6">
+            <section className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">About this course</h2>
               <p className="text-gray-600 leading-relaxed">{workshop.description}</p>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <svg className="w-6 h-6 text-blue-600 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <p className="text-xs text-gray-500">Date</p>
-                  <p className="text-sm font-medium text-gray-900">{formattedDate.split(",").slice(0, 2).join(",")}</p>
-                </div>
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <svg className="w-6 h-6 text-blue-600 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <p className="text-xs text-gray-500">Duration</p>
-                  <p className="text-sm font-medium text-gray-900">{workshop.duration}</p>
-                </div>
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <svg className="w-6 h-6 text-blue-600 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                  <p className="text-xs text-gray-500">Level</p>
-                  <p className="text-sm font-medium text-gray-900">{workshop.level}</p>
-                </div>
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <svg className="w-6 h-6 text-blue-600 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                  </svg>
-                  <p className="text-xs text-gray-500">Type</p>
-                  <p className="text-sm font-medium text-gray-900">{workshop.sessionType}</p>
-                </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
+                {[
+                  { label: "Date", value: formattedDate.split(",").slice(0, 2).join(","), icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
+                  { label: "Duration", value: workshop.duration, icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" },
+                  { label: "Level", value: workshop.level, icon: "M13 10V3L4 14h7v7l9-11h-7z" },
+                  { label: "Type", value: workshop.sessionType, icon: "M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" },
+                ].map((item) => (
+                  <div key={item.label} className="text-center p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100">
+                    <svg className="w-6 h-6 text-brand mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                    </svg>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider">{item.label}</p>
+                    <p className="text-sm font-semibold text-gray-900 mt-1">{item.value}</p>
+                  </div>
+                ))}
               </div>
             </section>
 
-            <section className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">What you&apos;ll learn</h2>
+            <section className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">What you&apos;ll learn</h2>
               <ul className="grid sm:grid-cols-2 gap-3">
                 {workshop.learningOutcomes.map((outcome, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
-                      <svg className="w-3 h-3 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <li key={index} className="flex items-start gap-3 p-2 rounded-lg hover:bg-green-50 transition-colors">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
+                      <svg className="w-3.5 h-3.5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-sm text-gray-600">{outcome}</span>
+                    <span className="text-sm text-gray-600 leading-relaxed">{outcome}</span>
                   </li>
                 ))}
               </ul>
             </section>
 
             {mentor && (
-              <section className="bg-white rounded-xl border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Your instructor</h2>
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-xl font-bold text-white flex-shrink-0">
+              <section className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Your instructor</h2>
+                <div className="flex items-start gap-5">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand to-brand-hover flex items-center justify-center text-2xl font-bold text-white flex-shrink-0 shadow-lg shadow-brand/25">
                     {mentor.name.charAt(0)}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900">{mentor.name}</h3>
+                    <h3 className="text-lg font-bold text-gray-900">{mentor.name}</h3>
                     {mentor.role && mentor.company && (
-                      <p className="text-sm text-gray-500">{mentor.role} at {mentor.company}</p>
+                      <p className="text-sm text-gray-500 mt-0.5">{mentor.role} at {mentor.company}</p>
                     )}
-                    <p className="mt-3 text-sm text-gray-600 leading-relaxed">{mentor.bio}</p>
+                    <p className="mt-4 text-sm text-gray-600 leading-relaxed">{mentor.bio}</p>
                     <div className="mt-4 flex flex-wrap gap-2">
                       {mentor.expertise.map((skill) => (
-                        <span key={skill} className="px-3 py-1 bg-blue-50 border border-blue-100 rounded-full text-xs font-medium text-blue-700">
+                        <span key={skill} className="px-3 py-1.5 bg-brand-light border border-brand-medium rounded-lg text-xs font-semibold text-brand">
                           {skill}
                         </span>
                       ))}
@@ -178,8 +169,8 @@ export default async function WorkshopDetailPage({
           </div>
 
           <div className="w-full lg:w-96 flex-shrink-0">
-            <div className="bg-white rounded-xl border border-gray-200 p-6 sticky top-24">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg shadow-gray-200/50 sticky top-24">
+              <div className="flex items-center justify-between mb-6">
                 <div>
                   {workshop.price === 0 ? (
                     <span className="text-3xl font-bold text-green-600">FREE</span>
@@ -198,45 +189,39 @@ export default async function WorkshopDetailPage({
                 totalSeats={workshop.totalSeats}
               />
 
-              <div className="space-y-3 mt-4">
+              <div className="space-y-3 mt-6">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Seats filled</span>
-                  <span className="font-medium text-gray-900">{seatsPercentage}%</span>
+                  <span className="text-gray-500">Seats filled</span>
+                  <span className="font-semibold text-gray-900">{seatsPercentage}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${seatsPercentage}%` }} />
+                <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-brand to-brand-hover h-2.5 rounded-full transition-all duration-1000 ease-out"
+                    style={{ width: `${seatsPercentage}%` }}
+                  />
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">{workshop.availableSeats} seats left</span>
-                  <span className="text-gray-600">{workshop.totalSeats} total</span>
+                  <span className={`font-medium ${workshop.availableSeats <= 5 ? "text-red-600" : "text-gray-500"}`}>
+                    {workshop.availableSeats} seats left
+                  </span>
+                  <span className="text-gray-400">{workshop.totalSeats} total</span>
                 </div>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-gray-200 space-y-3">
-                <div className="flex items-center gap-3 text-sm">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                  <span className="text-gray-600">{workshop.sessionType}</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <span className="text-gray-600">{formattedDate}</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className="text-gray-600">{workshop.duration}</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span className="text-gray-600">{workshop.enrolledCount.toLocaleString()} enrolled</span>
-                </div>
+              <div className="mt-6 pt-6 border-t border-gray-100 space-y-4">
+                {[
+                  { icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253", label: workshop.sessionType },
+                  { icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z", label: formattedDate },
+                  { icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z", label: workshop.duration },
+                  { icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z", label: `${workshop.enrolledCount.toLocaleString()} enrolled` },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-3 text-sm">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                    </svg>
+                    <span className="text-gray-600">{item.label}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

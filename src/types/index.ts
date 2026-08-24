@@ -45,6 +45,7 @@ export interface SavedSession {
 export interface AppState {
   savedSessions: SavedSession[];
   registrations: Registration[];
+  theme: "light" | "dark";
 }
 
 export interface FilterState {

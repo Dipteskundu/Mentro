@@ -4,6 +4,7 @@ import { useState } from "react";
 import Button from "@/components/ui/Button";
 import RegistrationModal from "./RegistrationModal";
 import { workshops } from "@/data";
+import { useApp } from "@/context/AppContext";
 
 interface WorkshopActionsProps {
   workshopId: string;
@@ -16,8 +17,10 @@ export default function WorkshopActions({
   availableSeats,
   totalSeats,
 }: WorkshopActionsProps) {
-  const [isSaved, setIsSaved] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { state, dispatch } = useApp();
+  const isSaved = state.savedSessions.some((session) => session.workshopId === workshopId);
+  const isRegistered = state.registrations.some((registration) => registration.workshopId === workshopId);
   const seatsLow = availableSeats <= 5;
   const soldOut = availableSeats === 0;
 
@@ -28,29 +31,29 @@ export default function WorkshopActions({
   }
 
   function handleSave() {
-    setIsSaved(!isSaved);
+    dispatch({ type: isSaved ? "UNSAVE_WORKSHOP" : "SAVE_WORKSHOP", payload: { workshopId } });
   }
 
   return (
     <>
-      <div className="p-4 bg-gray-50 rounded-lg mb-8">
+      <div className="p-5 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100">
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <Button
             variant="primary"
             size="lg"
-            disabled={soldOut}
+            disabled={soldOut || isRegistered}
             onClick={handleRegister}
-            className="flex-1"
+            className="flex-1 shadow-lg shadow-brand/25"
           >
-            {soldOut ? "Sold Out" : "Register Now"}
+            {soldOut ? "Sold Out" : isRegistered ? "You’re registered" : "Reserve your seat"}
           </Button>
 
           <button
             onClick={handleSave}
-            className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors border-2 ${
+            className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 border-2 min-h-[48px] ${
               isSaved
-                ? "border-red-200 bg-red-50 text-red-600 hover:bg-red-100"
-                : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                ? "border-red-200 bg-red-50 text-red-600 hover:bg-red-100 shadow-lg shadow-red-500/10"
+                : "border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300"
             }`}
           >
             {isSaved ? (
@@ -86,7 +89,7 @@ export default function WorkshopActions({
 
         <div className="flex items-center gap-2">
           <svg
-            className="w-4 h-4 text-gray-400"
+            className={`w-4 h-4 ${seatsLow ? "text-red-500" : "text-gray-400"}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -100,7 +103,7 @@ export default function WorkshopActions({
           </svg>
           <span
             className={`text-sm font-medium ${
-              seatsLow ? "text-red-600" : "text-gray-600"
+              seatsLow ? "text-red-600" : "text-gray-500"
             }`}
           >
             {availableSeats} of {totalSeats} seats available

@@ -1,18 +1,20 @@
 "use client";
 
 import { createContext, useContext, useReducer, useEffect, ReactNode } from "react";
-import { AppState, Registration, SavedSession } from "@/types";
+import { AppState, Registration } from "@/types";
 
 type Action =
   | { type: "SAVE_WORKSHOP"; payload: { workshopId: string } }
   | { type: "UNSAVE_WORKSHOP"; payload: { workshopId: string } }
   | { type: "REGISTER_WORKSHOP"; payload: Registration }
   | { type: "UNREGISTER_WORKSHOP"; payload: { workshopId: string } }
+  | { type: "SET_THEME"; payload: AppState["theme"] }
   | { type: "LOAD_STATE"; payload: AppState };
 
 const initialState: AppState = {
   savedSessions: [],
   registrations: [],
+  theme: "light",
 };
 
 function reducer(state: AppState, action: Action): AppState {
@@ -54,6 +56,9 @@ function reducer(state: AppState, action: Action): AppState {
         ),
       };
 
+    case "SET_THEME":
+      return { ...state, theme: action.payload };
+
     case "LOAD_STATE":
       return action.payload;
 
@@ -78,13 +83,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        const parsed = JSON.parse(saved) as AppState;
-        dispatch({ type: "LOAD_STATE", payload: parsed });
+        const parsed = JSON.parse(saved) as Partial<AppState>;
+        if (parsed.theme && parsed.theme !== state.theme) {
+          dispatch({ type: "SET_THEME", payload: parsed.theme });
+        }
       }
     } catch {
-      // Ignore parse errors
+      // Ignore storage errors
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", state.theme === "dark");
+    document.documentElement.style.colorScheme = state.theme;
+  }, [state.theme]);
 
   useEffect(() => {
     try {
