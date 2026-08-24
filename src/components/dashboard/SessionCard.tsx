@@ -25,10 +25,10 @@ export default function SessionCard({
   }).format(new Date(workshop.date));
 
   return (
-    <div className="rounded-xl border border-gray-200 p-4 bg-white hover:shadow-md transition-shadow">
+    <div className="rounded-2xl border border-gray-200 p-5 bg-white hover:shadow-lg hover:shadow-gray-200/50 transition-all duration-300 hover:-translate-y-0.5">
       <div className="flex flex-col sm:flex-row sm:items-start gap-4">
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-3">
             <Badge variant="level" level={workshop.level}>
               {workshop.level}
             </Badge>
@@ -39,15 +39,15 @@ export default function SessionCard({
 
           <Link
             href={`/workshop/${workshop.id}`}
-            className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+            className="text-lg font-bold text-gray-900 hover:text-brand transition-colors line-clamp-1"
           >
             {workshop.title}
           </Link>
 
           <div className="flex items-center gap-4 text-sm text-gray-500 mt-2">
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1.5">
               <svg
-                className="w-4 h-4"
+                className="w-4 h-4 text-gray-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -61,9 +61,9 @@ export default function SessionCard({
               </svg>
               {formattedDate} · {workshop.duration}
             </span>
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1.5">
               <svg
-                className="w-4 h-4"
+                className="w-4 h-4 text-gray-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

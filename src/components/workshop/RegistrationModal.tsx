@@ -8,6 +8,7 @@ import { useApp } from "@/context/AppContext";
 import { workshops } from "@/data";
 import { Workshop } from "@/types";
 import { checkConflict, ConflictResult } from "@/utils/conflictDetection";
+import { useRouter } from "next/navigation";
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ export default function RegistrationModal({
   workshop,
 }: RegistrationModalProps) {
   const { state, dispatch } = useApp();
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [nameError, setNameError] = useState("");
@@ -108,9 +110,6 @@ export default function RegistrationModal({
     setIsSubmitting(false);
     setIsSuccess(true);
 
-    setTimeout(() => {
-      handleClose();
-    }, 2000);
   }
 
   function handleProceedAnyway() {
@@ -121,10 +120,10 @@ export default function RegistrationModal({
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Register for Workshop" size="sm">
       {isSuccess ? (
-        <div className="py-8 text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="py-10 text-center">
+          <div className="w-20 h-20 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-green-500/20">
             <svg
-              className="w-8 h-8 text-green-600"
+              className="w-10 h-10 text-green-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -137,19 +136,22 @@ export default function RegistrationModal({
               />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+          <h3 className="text-xl font-bold text-gray-900 mb-2">
             Registration Successful!
           </h3>
           <p className="text-sm text-gray-500">
             You&apos;re registered for {workshop.title}
           </p>
+          <Button className="mt-6" onClick={() => { handleClose(); router.push("/my-learning"); }}>
+            View my schedule
+          </Button>
         </div>
       ) : showConflict && conflictResult ? (
         <div>
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-5">
             <div className="flex items-start gap-3">
               <svg
-                className="w-5 h-5 text-amber-500 mt-0.5"
+                className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -162,13 +164,13 @@ export default function RegistrationModal({
                 />
               </svg>
               <div>
-                <h4 className="font-medium text-amber-800">
+                <h4 className="font-bold text-amber-800">
                   Schedule Conflict Detected
                 </h4>
                 <p className="text-sm text-amber-700 mt-1">
                   This workshop overlaps with:
                 </p>
-                <ul className="mt-2 space-y-2">
+                <ul className="mt-3 space-y-2">
                   {conflictResult.conflictingWorkshops.map((cw) => {
                     const formattedDate = new Intl.DateTimeFormat("en-US", {
                       month: "short",
@@ -180,9 +182,9 @@ export default function RegistrationModal({
                     return (
                       <li
                         key={cw.id}
-                        className="text-sm text-amber-800 bg-amber-100 rounded px-3 py-2"
+                        className="text-sm text-amber-800 bg-amber-100 rounded-xl px-4 py-3"
                       >
-                        <span className="font-medium">{cw.title}</span>
+                        <span className="font-semibold">{cw.title}</span>
                         <br />
                         <span className="text-amber-600">
                           {formattedDate} · {cw.duration}

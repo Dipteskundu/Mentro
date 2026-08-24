@@ -65,13 +65,13 @@ export default function WorkshopFilters({
     filters.minRating > 0;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 sticky top-24">
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+    <div className="bg-white rounded-2xl border border-gray-200 p-5 sticky top-24 shadow-sm">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold text-gray-900">Filters</h2>
         {hasActiveFilters && (
           <button
             onClick={clearAllFilters}
-            className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+            className="text-sm text-brand hover:text-brand-hover font-semibold transition-colors"
           >
             Clear All
           </button>
@@ -83,19 +83,19 @@ export default function WorkshopFilters({
           {CATEGORIES.map((category) => (
             <label
               key={category}
-              className="flex items-center gap-3 cursor-pointer group"
+              className="flex items-center gap-3 cursor-pointer group p-2 rounded-lg hover:bg-gray-50 transition-colors"
             >
               <input
                 type="checkbox"
                 checked={filters.categories.includes(category)}
                 onChange={() => handleCategoryChange(category)}
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-brand border-gray-300 rounded focus:ring-brand"
               />
               <span className="text-sm text-gray-700 group-hover:text-gray-900 flex-1">
                 {category}
               </span>
-              <span className="text-sm text-gray-500">
-                ({categoryCounts[category] || 0})
+              <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                {categoryCounts[category] || 0}
               </span>
             </label>
           ))}
@@ -107,13 +107,13 @@ export default function WorkshopFilters({
           {RATINGS.map((rating) => (
             <label
               key={rating}
-              className="flex items-center gap-3 cursor-pointer group"
+              className="flex items-center gap-3 cursor-pointer group p-2 rounded-lg hover:bg-gray-50 transition-colors"
             >
               <input
                 type="checkbox"
                 checked={filters.minRating === rating}
                 onChange={() => handleRatingChange(rating)}
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-brand border-gray-300 rounded focus:ring-brand"
               />
               <div className="flex items-center gap-1 flex-1">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -131,10 +131,10 @@ export default function WorkshopFilters({
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                 ))}
-                <span className="text-sm text-gray-700 ml-1">{rating} stars</span>
+                <span className="text-sm text-gray-600 ml-1">{rating}</span>
               </div>
-              <span className="text-sm text-gray-500">
-                ({ratingCounts[rating] || 0})
+              <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                {ratingCounts[rating] || 0}
               </span>
             </label>
           ))}
@@ -146,19 +146,16 @@ export default function WorkshopFilters({
           {PRICE_OPTIONS.map((option) => (
             <label
               key={option}
-              className="flex items-center gap-3 cursor-pointer group"
+              className="flex items-center gap-3 cursor-pointer group p-2 rounded-lg hover:bg-gray-50 transition-colors"
             >
               <input
                 type="checkbox"
                 checked={filters.priceFilter === option}
                 onChange={() => handlePriceChange(option)}
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-brand border-gray-300 rounded focus:ring-brand"
               />
               <span className="text-sm text-gray-700 group-hover:text-gray-900 capitalize flex-1">
                 {option === "all" ? "All" : option}
-              </span>
-              <span className="text-sm text-gray-500">
-                ({option === "all" ? "18" : option === "free" ? "10" : "11"})
               </span>
             </label>
           ))}
@@ -170,19 +167,19 @@ export default function WorkshopFilters({
           {LEVELS.map((level) => (
             <label
               key={level}
-              className="flex items-center gap-3 cursor-pointer group"
+              className="flex items-center gap-3 cursor-pointer group p-2 rounded-lg hover:bg-gray-50 transition-colors"
             >
               <input
                 type="checkbox"
                 checked={filters.levels.includes(level)}
                 onChange={() => handleLevelChange(level)}
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-brand border-gray-300 rounded focus:ring-brand"
               />
               <span className="text-sm text-gray-700 group-hover:text-gray-900 flex-1">
                 {level}
               </span>
-              <span className="text-sm text-gray-500">
-                ({levelCounts[level] || 0})
+              <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                {levelCounts[level] || 0}
               </span>
             </label>
           ))}

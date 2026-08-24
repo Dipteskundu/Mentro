@@ -8,6 +8,7 @@ export const mentors: Mentor[] = [
     expertise: ["Web Development", "React", "Node.js", "TypeScript"],
     company: "Google",
     role: "Senior Frontend Engineer",
+    avatar: "/images/mentor-sarah-chen.jpg",
   },
   {
     id: "m-002",
@@ -16,6 +17,7 @@ export const mentors: Mentor[] = [
     expertise: ["Mobile Development", "React Native", "Flutter", "iOS"],
     company: "Meta",
     role: "Mobile Developer",
+    avatar: "/images/mentor-marcus-johnson.jpg",
   },
   {
     id: "m-003",
@@ -24,6 +26,7 @@ export const mentors: Mentor[] = [
     expertise: ["AI/ML", "Python", "Deep Learning", "Data Science"],
     company: "OpenAI",
     role: "AI Research Scientist",
+    avatar: "/images/mentor-priya-sharma.jpg",
   },
   {
     id: "m-004",
@@ -32,6 +35,7 @@ export const mentors: Mentor[] = [
     expertise: ["Cloud Computing", "DevOps", "AWS", "Kubernetes"],
     company: "AWS",
     role: "Cloud Architect",
+    avatar: "/images/mentor-alex-rivera.jpg",
   },
   {
     id: "m-005",
@@ -40,5 +44,6 @@ export const mentors: Mentor[] = [
     expertise: ["UI/UX Design", "Design Systems", "Figma", "User Research"],
     company: "Figma",
     role: "Lead Designer",
+    avatar: "/images/mentor-emma-wilson.jpg",
   },
 ];
