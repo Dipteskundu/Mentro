@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import Badge from "@/components/ui/Badge";
 import StarRating from "@/components/ui/StarRating";
 import { Workshop } from "@/types";
 
@@ -9,12 +8,6 @@ interface WorkshopCardProps {
 }
 
 export default function WorkshopCard({ workshop }: WorkshopCardProps) {
-  const formattedDate = new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(workshop.date));
-
   const categoryColors: Record<string, string> = {
     Development: "bg-blue-100 text-blue-800",
     Marketing: "bg-pink-100 text-pink-800",
@@ -26,42 +19,53 @@ export default function WorkshopCard({ workshop }: WorkshopCardProps) {
   return (
     <Link
       href={`/workshop/${workshop.id}`}
-      className="block bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-200"
+      className="group block bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 hover:-translate-y-1"
     >
       <div className="flex flex-col sm:flex-row">
-        <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0">
+        <div className="relative w-full sm:w-56 h-52 sm:h-auto flex-shrink-0 overflow-hidden">
           <Image
             src={workshop.imageUrl}
             alt={workshop.title}
             fill
-            className="object-cover"
-            sizes="(max-width: 640px) 100vw, 192px"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, 224px"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute top-3 left-3">
+            <span
+              className={`inline-block px-2.5 py-1 text-xs font-semibold rounded-lg ${categoryColors[workshop.category] || "bg-gray-100 text-gray-800"} backdrop-blur-sm`}
+            >
+              {workshop.category}
+            </span>
+          </div>
+          <div className="absolute top-3 right-3">
+            {workshop.price === 0 ? (
+              <span className="inline-flex items-center px-2.5 py-1 bg-green-500 text-white text-xs font-bold rounded-lg shadow-lg">
+                FREE
+              </span>
+            ) : (
+              <span className="inline-flex items-center px-2.5 py-1 bg-white/90 text-gray-900 text-xs font-bold rounded-lg shadow-lg backdrop-blur-sm">
+                ${workshop.price.toFixed(2)}
+              </span>
+            )}
+          </div>
         </div>
 
-        <div className="flex-1 p-4 sm:p-5">
+        <div className="flex-1 p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1">
-              <span
-                className={`inline-block px-2 py-1 text-xs font-semibold rounded ${
-                  categoryColors[workshop.category] || "bg-gray-100 text-gray-800"
-                }`}
-              >
-                {workshop.category}
-              </span>
-
-              <h3 className="mt-2 text-lg font-semibold text-gray-900 line-clamp-2">
+              <h3 className="text-lg font-bold text-gray-900 line-clamp-2 group-hover:text-brand transition-colors duration-200">
                 {workshop.title}
               </h3>
 
-              <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+              <p className="mt-1.5 text-sm text-gray-500 line-clamp-2 leading-relaxed">
                 {workshop.description}
               </p>
 
               <div className="flex flex-wrap items-center gap-3 mt-3 text-sm text-gray-500">
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-1.5">
                   <svg
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-gray-400"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -75,9 +79,9 @@ export default function WorkshopCard({ workshop }: WorkshopCardProps) {
                   </svg>
                   {workshop.level}
                 </span>
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-1.5">
                   <svg
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-gray-400"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -98,10 +102,10 @@ export default function WorkshopCard({ workshop }: WorkshopCardProps) {
               </div>
 
               <div className="mt-3">
-                <span className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700">
+                <span className="inline-flex items-center text-sm font-semibold text-brand group-hover:text-brand-hover transition-colors">
                   View Course
                   <svg
-                    className="w-4 h-4 ml-1"
+                    className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -115,16 +119,6 @@ export default function WorkshopCard({ workshop }: WorkshopCardProps) {
                   </svg>
                 </span>
               </div>
-            </div>
-
-            <div className="text-right flex-shrink-0">
-              {workshop.price === 0 ? (
-                <span className="text-lg font-bold text-green-600">FREE</span>
-              ) : (
-                <span className="text-lg font-bold text-gray-900">
-                  ${workshop.price.toFixed(2)}
-                </span>
-              )}
             </div>
           </div>
         </div>
