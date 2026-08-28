@@ -11,23 +11,62 @@ import LearnerWallOfLoveCarousel from "@/components/home/LearnerWallOfLoveCarous
 import FAQ from "@/components/home/FAQ";
 import TrustAndTransparencyPledge from "@/components/home/TrustAndTransparencyPledge";
 import HomeCTA from "@/components/home/HomeCTA";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export default function Home() {
   return (
     <div className="bg-white dark:bg-[#101828] transition-colors duration-300">
-      <HomeHero />
-      <TrustedBy />
-      <HomeStatsAndFeatures />
-      <FeaturedWorkshops />
-      <UpcomingSessions />
-      <LearningRoadmaps />
-      <HowItWorks />
-      <MentorSpotlights />
-      <LearningPerks />
-      <LearnerWallOfLoveCarousel />
-      <FAQ />
-      <TrustAndTransparencyPledge />
-      <HomeCTA />
+      <ScrollReveal direction="none" duration={0.8}>
+        <HomeHero />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <TrustedBy />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <HomeStatsAndFeatures />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <FeaturedWorkshops />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <UpcomingSessions />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <LearningRoadmaps />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <HowItWorks />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <MentorSpotlights />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <LearningPerks />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <LearnerWallOfLoveCarousel />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <FAQ />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <TrustAndTransparencyPledge />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.15}>
+        <HomeCTA />
+      </ScrollReveal>
     </div>
   );
 }
