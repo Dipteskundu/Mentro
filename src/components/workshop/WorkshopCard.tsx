@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import StarRating from "@/components/ui/StarRating";
 import { Workshop } from "@/types";
+import { motion } from "framer-motion";
 
 interface WorkshopCardProps {
   workshop: Workshop;
@@ -17,11 +18,18 @@ export default function WorkshopCard({ workshop }: WorkshopCardProps) {
   };
 
   return (
-    <Link
-      href={`/workshop/${workshop.id}`}
-      className="group block bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 hover:-translate-y-1"
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      whileHover={{ y: -8 }}
     >
-      <div className="flex flex-col sm:flex-row">
+      <Link
+        href={`/workshop/${workshop.id}`}
+        className="group block bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-white/10 overflow-hidden shadow-sm hover:shadow-2xl dark:hover:shadow-brand/20 transition-all duration-300"
+      >
+        <div className="flex flex-col sm:flex-row h-full">
         <div className="relative w-full sm:w-56 h-52 sm:h-auto flex-shrink-0 overflow-hidden">
           <Image
             src={workshop.imageUrl}
@@ -119,10 +127,11 @@ export default function WorkshopCard({ workshop }: WorkshopCardProps) {
                   </svg>
                 </span>
               </div>
-            </div>
           </div>
         </div>
-      </div>
-    </Link>
+        </div>
+        </div>
+      </Link>
+    </motion.div>
   );
 }
