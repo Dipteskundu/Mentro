@@ -4,63 +4,16 @@ export interface Testimonial {
   company: string;
   quote: string;
   rating: number;
+  avatar: string;
 }
 
 export const testimonials: Testimonial[] = [
-  {
-    name: "Alex Kim",
-    role: "Frontend Developer",
-    company: "Stripe",
-    quote: "Mentro completely changed my career trajectory. The React workshop with Sarah was hands-down the best learning experience I've had. I landed a frontend role two months later.",
-    rating: 5,
-  },
-  {
-    name: "Jordan Lee",
-    role: "Mobile Developer",
-    company: "Shopify",
-    quote: "The 1-on-1 mentorship sessions with Marcus helped me transition from web dev to mobile. The personalized feedback was invaluable — nothing like generic video courses.",
-    rating: 5,
-  },
-  {
-    name: "Sam Patel",
-    role: "ML Engineer",
-    company: "OpenAI",
-    quote: "I joined the AI/ML bootcamp as a complete beginner. Priya's teaching style made complex concepts accessible. Now I'm building ML models at work every day.",
-    rating: 5,
-  },
-  {
-    name: "Maria Garcia",
-    role: "UX Designer",
-    company: "Figma",
-    quote: "Emma's design systems workshop was a game-changer. I went from struggling with component consistency to leading our team's entire design system overhaul.",
-    rating: 5,
-  },
-  {
-    name: "David Chen",
-    role: "Cloud Engineer",
-    company: "Netflix",
-    quote: "The AWS Cloud Practitioner webinar with Alex was incredibly well-structured. I passed my certification on the first attempt and got promoted within three months.",
-    rating: 5,
-  },
-  {
-    name: "Priya Nair",
-    role: "Data Analyst",
-    company: "Spotify",
-    quote: "The Data Analysis with Python workshop gave me practical skills I use daily. The hands-on projects with real datasets made all the difference in my learning.",
-    rating: 4,
-  },
-  {
-    name: "James Wilson",
-    role: "DevOps Engineer",
-    company: "Microsoft",
-    quote: "Alex's CI/CD Pipeline Mastery workshop transformed how our team ships code. We went from manual deployments to fully automated pipelines in two weeks.",
-    rating: 5,
-  },
-  {
-    name: "Aisha Rahman",
-    role: "Full Stack Developer",
-    company: "Airbnb",
-    quote: "I've tried Udemy and Coursera, but Mentro's live mentorship is on another level. Being able to ask questions in real-time and get code reviews from industry experts accelerated my growth exponentially.",
-    rating: 5,
-  },
+  { name: "Jamie Park", role: "Frontend Engineer", company: "Lumen Works", quote: "Sarah's architecture workshop gave me a language for decisions I was already making by instinct. My next PR was smaller, clearer, and far easier for the team to review.", rating: 5, avatar: "/images/learner-jamie-park.jpg" },
+  { name: "Noah Reed", role: "Mobile Developer", company: "Fieldnote", quote: "Marcus did not just show us how to build a screen—he showed us how to make product trade-offs. I left with a prototype and a much stronger point of view.", rating: 5, avatar: "/images/learner-noah-reed.jpg" },
+  { name: "Elena Ross", role: "Data Product Analyst", company: "Civic Thread", quote: "Priya made model evaluation feel tangible. The practical exercises helped me move from reporting numbers to asking better questions about the data behind them.", rating: 5, avatar: "/images/learner-elena-ross.jpg" },
+  { name: "Omar Hassan", role: "Product Designer", company: "Sonder Health", quote: "Emma's critique process was exceptionally generous and precise. I now have a practical way to bring engineering into our system work from the very first sketch.", rating: 5, avatar: "/images/learner-omar-hassan.jpg" },
+  { name: "Maya Patel", role: "Cloud Engineer", company: "Kite Systems", quote: "Alex turned an intimidating platform topic into a series of useful operating habits. The reliability clinic has already changed how our team prepares for releases.", rating: 5, avatar: "/images/learner-maya-patel.jpg" },
+  { name: "Lucas Ward", role: "Insights Analyst", company: "Maple & Co.", quote: "The session was thoughtfully paced and deeply practical. I used the notebook structure from the workshop in a stakeholder readout the very next week.", rating: 5, avatar: "/images/learner-lucas-ward.jpg" },
+  { name: "Sophia Khan", role: "Platform Engineer", company: "Atlas Ridge", quote: "The delivery workshop was the rare technical class that immediately improved our daily work. We left with a sensible path to fewer manual release steps.", rating: 5, avatar: "/images/learner-sophia-khan.jpg" },
+  { name: "Daniel Cho", role: "Full-Stack Developer", company: "Goodwell Studio", quote: "What stood out was the room: thoughtful peers, direct feedback, and time to work through a real problem. Mentro feels more like a studio than a course catalogue.", rating: 5, avatar: "/images/learner-daniel-cho.jpg" },
 ];

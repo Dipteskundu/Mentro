@@ -3,11 +3,11 @@ import Image from "next/image";
 import { mentors } from "@/data/mentors";
 
 const companyColors: Record<string, string> = {
-  Google: "bg-blue-50 text-blue-700",
-  Meta: "bg-blue-50 text-blue-600",
-  OpenAI: "bg-green-50 text-green-700",
-  AWS: "bg-orange-50 text-orange-700",
-  Figma: "bg-purple-50 text-purple-700",
+  "Northstar Studio": "bg-indigo-50 text-indigo-700",
+  "Harbor Labs": "bg-sky-50 text-sky-700",
+  "Meridian Research": "bg-emerald-50 text-emerald-700",
+  "Aster Cloud": "bg-amber-50 text-amber-700",
+  Formline: "bg-violet-50 text-violet-700",
 };
 
 export default function MentorSpotlights() {
@@ -21,7 +21,7 @@ export default function MentorSpotlights() {
             </span>
         </h2>
         <p className="text-gray-500 text-center mt-3 max-w-xl mx-auto text-lg">
-          Our mentors work at the world&apos;s leading tech companies
+          Learn from practitioners building thoughtful products every day
         </p>
 
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">

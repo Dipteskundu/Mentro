@@ -27,6 +27,18 @@ export interface Mentor {
   avatar?: string;
   company?: string;
   role?: string;
+  rating?: number;
+  reviewCount?: number;
+  studentsMentored?: number;
+  yearsExperience?: number;
+  availability?: string;
+  languages?: string[];
+  achievements?: string[];
+  quote?: string;
+  featured?: boolean;
+  linkedIn?: string;
+  github?: string;
+  twitter?: string;
 }
 
 export interface Registration {

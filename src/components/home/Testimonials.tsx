@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { testimonials } from "@/data";
 
 function StarIcon() {
@@ -9,14 +10,14 @@ function StarIcon() {
 }
 
 const companyColors: Record<string, string> = {
-  Stripe: "bg-purple-50 text-purple-700",
-  Shopify: "bg-green-50 text-green-700",
-  OpenAI: "bg-green-50 text-green-700",
-  Figma: "bg-purple-50 text-purple-700",
-  Netflix: "bg-red-50 text-red-700",
-  Spotify: "bg-green-50 text-green-600",
-  Microsoft: "bg-blue-50 text-blue-700",
-  Airbnb: "bg-pink-50 text-pink-700",
+  "Lumen Works": "bg-violet-50 text-violet-700",
+  Fieldnote: "bg-sky-50 text-sky-700",
+  "Civic Thread": "bg-emerald-50 text-emerald-700",
+  "Sonder Health": "bg-rose-50 text-rose-700",
+  "Kite Systems": "bg-amber-50 text-amber-700",
+  "Maple & Co.": "bg-orange-50 text-orange-700",
+  "Atlas Ridge": "bg-indigo-50 text-indigo-700",
+  "Goodwell Studio": "bg-fuchsia-50 text-fuchsia-700",
 };
 
 export default function Testimonials() {
@@ -58,8 +59,8 @@ export default function Testimonials() {
                   &ldquo;{testimonial.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3 mt-5 pt-5 border-t border-gray-200">
-                  <div className="w-10 h-10 bg-gradient-to-br from-brand to-brand-hover rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0">
-                    {testimonial.name.split(" ").map((n) => n[0]).join("")}
+                  <div className="relative w-10 h-10 overflow-hidden rounded-full shrink-0 ring-2 ring-white shadow-sm">
+                    <Image src={testimonial.avatar} alt={`${testimonial.name}, ${testimonial.role}`} fill sizes="40px" className="object-cover" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-gray-900 truncate">{testimonial.name}</p>
