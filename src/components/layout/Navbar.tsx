@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { NAV_LINKS } from "@/utils/constants";
-import { useApp } from "@/context/AppContext";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 function HomeIcon({ className }: { className?: string }) {
   return (
@@ -15,30 +16,67 @@ function HomeIcon({ className }: { className?: string }) {
   );
 }
 
-function SunIcon({ className }: { className?: string }) {
+function CompassIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm2.78 7.97-5.03 5.03a.75.75 0 0 0 0 1.06l1.06 1.06a.75.75 0 0 0 1.06 0l5.03-5.03a.75.75 0 0 0 0-1.06l-1.06-1.06a.75.75 0 0 0-1.06 0z" />
     </svg>
   );
 }
 
-function MoonIcon({ className }: { className?: string }) {
+function UsersIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0z" />
     </svg>
   );
 }
+
+function InfoIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+    </svg>
+  );
+}
+
+function BookIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+    </svg>
+  );
+}
+
+const LINK_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  "/": HomeIcon,
+  "/explore": CompassIcon,
+  "/mentors": UsersIcon,
+  "/about": InfoIcon,
+  "/my-learning": BookIcon,
+};
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const { state, dispatch } = useApp();
 
-  const toggleTheme = () =>
-    dispatch({ type: "SET_THEME", payload: state.theme === "dark" ? "light" : "dark" });
+  const menuRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+
+  const getFocusableElements = useCallback(() => {
+    if (!menuRef.current) return [];
+    return Array.from(
+      menuRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    );
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+    setTimeout(() => hamburgerRef.current?.focus(), 100);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -47,8 +85,54 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!mobileMenuOpen) return;
+
+      if (e.key === "Escape") {
+        closeMenu();
+        return;
+      }
+
+      if (e.key === "Tab") {
+        const focusable = getFocusableElements();
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [mobileMenuOpen, closeMenu, getFocusableElements]);
+
+  useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      setTimeout(() => {
+        const focusable = getFocusableElements();
+        focusable[0]?.focus();
+      }, 150);
+    }
+  }, [mobileMenuOpen, getFocusableElements]);
 
   const isHome = (href: string) => href === "/";
 
@@ -109,20 +193,7 @@ export default function Navbar() {
 
             {/* Desktop Right Actions */}
             <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={toggleTheme}
-                aria-label={`Switch to ${state.theme === "dark" ? "light" : "dark"} theme`}
-                className="relative w-10 h-10 rounded-full border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-white/10 transition-all duration-200 flex items-center justify-center"
-              >
-                <span key={state.theme} className="animate-nav-theme-spin">
-                  {state.theme === "dark" ? (
-                    <SunIcon className="w-[18px] h-[18px] text-amber-400" />
-                  ) : (
-                    <MoonIcon className="w-[18px] h-[18px]" />
-                  )}
-                </span>
-              </button>
+              <ThemeToggle size="md" />
 
               <Link
                 href="/explore"
@@ -147,94 +218,152 @@ export default function Navbar() {
               height={28}
               className="rounded-lg transition-transform duration-200 group-hover:scale-105"
             />
-            <div className="flex flex-col">
-              <span className="text-xl font-bold text-gray-900">Mentro</span>
-              <span className="text-xs text-gray-500 hidden sm:block">
-                LEARN CONNECT GROW
-              </span>
-            </div>
-            <span className="text-xl font-bold text-gray-900">Mentro</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">Mentro</span>
           </Link>
 
           {/* Right: Theme Toggle + Hamburger */}
           <div className="flex items-center gap-1.5">
+            <ThemeToggle size="sm" />
             <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label={`Switch to ${state.theme === "dark" ? "light" : "dark"} theme`}
-              className="w-8 h-8 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
-            >
-              <span key={state.theme} className="animate-nav-theme-spin">
-                {state.theme === "dark" ? (
-                  <SunIcon className="w-4 h-4 text-amber-400" />
-                ) : (
-                  <MoonIcon className="w-4 h-4" />
-                )}
-              </span>
-            </button>
-            <button
+              ref={hamburgerRef}
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-              className="w-8 h-8 rounded-full bg-gray-900 dark:bg-white flex items-center justify-center text-white dark:text-gray-900 transition-colors"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+              className="w-10 h-10 rounded-full bg-gray-900 dark:bg-white flex items-center justify-center text-white dark:text-gray-900 transition-colors"
             >
-              {mobileMenuOpen ? (
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-                </svg>
-              )}
+              <div className="w-4 h-3 relative flex flex-col justify-between">
+                <motion.span
+                  animate={mobileMenuOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-full h-0.5 bg-white dark:bg-gray-900 block origin-center"
+                />
+                <motion.span
+                  animate={mobileMenuOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className="w-full h-0.5 bg-white dark:bg-gray-900 block"
+                />
+                <motion.span
+                  animate={mobileMenuOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-full h-0.5 bg-white dark:bg-gray-900 block origin-center"
+                />
+              </div>
             </button>
           </div>
         </div>
-
-        {/* Mobile Slide-Down Dropdown */}
-        {mobileMenuOpen && (
-          <div className="mt-2 animate-slide-down">
-            <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/10 dark:shadow-black/30 border border-gray-200/50 dark:border-white/10 overflow-hidden mx-1">
-              {/* Nav Links */}
-              <div className="py-2">
-                {NAV_LINKS.map((link) => {
-                  const active = pathname === link.href;
-                  const home = isHome(link.href);
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors ${
-                        active
-                          ? "text-brand bg-brand-light"
-                          : "text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/5"
-                      }`}
-                    >
-                      {home && <HomeIcon className="w-4 h-4 shrink-0" />}
-                      {link.label}
-                      {active && (
-                        <span className="ml-auto w-1.5 h-1.5 rounded-full bg-brand" />
-                      )}
-                    </Link>
-                  );
-                })}
-              </div>
-
-              {/* CTA Button */}
-              <div className="px-4 pb-4 pt-2">
-                <Link
-                  href="/explore"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center w-full px-5 py-2.5 text-sm font-semibold text-white bg-brand rounded-xl hover:bg-brand-hover active:scale-[0.98] transition-all duration-200 shadow-md shadow-brand/20"
-                >
-                  Get Started
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Mobile Menu Drawer */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden"
+              onClick={closeMenu}
+              aria-hidden="true"
+            />
+
+            {/* Drawer */}
+            <motion.div
+              ref={menuRef}
+              id="mobile-menu"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed top-0 right-0 h-full w-[85vw] max-w-sm bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl z-50 lg:hidden shadow-2xl shadow-black/20 dark:shadow-black/40"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
+            >
+              <div className="flex flex-col h-full">
+                {/* Header */}
+                <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-white/10">
+                  <Link href="/" className="flex items-center gap-2.5 group" onClick={closeMenu}>
+                    <Image
+                      src="/MentroLogo.png"
+                      alt="Mentro"
+                      width={32}
+                      height={32}
+                      className="rounded-lg transition-transform duration-200 group-hover:scale-105"
+                    />
+                    <span className="text-lg font-bold text-gray-900 dark:text-white">Mentro</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={closeMenu}
+                    aria-label="Close menu"
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Nav Links */}
+                <div className="flex-1 overflow-y-auto py-4 px-3">
+                  <div className="space-y-1">
+                    {NAV_LINKS.map((link, index) => {
+                      const active = pathname === link.href;
+                      const Icon = LINK_ICONS[link.href] || HomeIcon;
+                      return (
+                        <motion.div
+                          key={link.href}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 + 0.1 }}
+                        >
+                          <Link
+                            href={link.href}
+                            onClick={closeMenu}
+                            className={`flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-[15px] font-medium transition-all duration-200 ${
+                              active
+                                ? "bg-brand/10 text-brand"
+                                : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5"
+                            }`}
+                          >
+                            <Icon className={`w-5 h-5 shrink-0 ${active ? "text-brand" : "text-gray-400 dark:text-gray-500"}`} />
+                            <span className="flex-1">{link.label}</span>
+                            {active && (
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="w-2 h-2 rounded-full bg-brand"
+                              />
+                            )}
+                          </Link>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Bottom Actions */}
+                <div className="px-4 pb-6 pt-4 border-t border-gray-100 dark:border-white/10 space-y-3">
+                  <Link
+                    href="/explore"
+                    onClick={closeMenu}
+                    className="flex items-center justify-center w-full px-5 py-3.5 text-sm font-semibold text-white bg-brand rounded-xl hover:bg-brand-hover active:scale-[0.98] transition-all duration-200 shadow-md shadow-brand/20"
+                  >
+                    Get Started
+                    <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

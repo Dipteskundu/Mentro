@@ -133,9 +133,6 @@ export default function UpcomingSchedule({
         <SessionCard
           key={registration.id}
           workshop={workshop}
-          actionLabel="View Workshop Details"
-          onAction={() => router.push(`/workshop/${workshop.id}`)}
-          actionVariant="primary"
           onJoinRoom={onJoinRoom}
           onExportCalendar={onExportCalendar}
           meta={startsIn}

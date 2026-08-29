@@ -62,6 +62,52 @@ body {
   outline-offset: 2px;
 }
 
+/* ─── View Transition Base ───────────────────────────────────────────────────
+   Smooth crossfade between old and new snapshots while clip-path animates.
+   The old snapshot fades out while the new one reveals via clip-path.
+─────────────────────────────────────────────────────────────────────────── */
+::view-transition-old(root) {
+  animation: vt-fade-out 400ms ease-out forwards;
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 400ms ease-out forwards;
+  z-index: 9999;
+  will-change: clip-path, opacity;
+}
+
+@keyframes vt-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ─── CSS Variables — store click coordinates for Effects ─────────────────────
+   These are set from JavaScript before startViewTransition is called,
+   so the CSS animations can reference the exact click position.
+─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --vt-x: 50%;
+  --vt-y: 50%;
+  --vt-radius: 0px;
+  --vt-duration: 600ms;
+  --vt-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Reduced Motion — always respect user preference ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -182,6 +228,25 @@ body {
 .animate-float-medium { animation: floatMedium 6s ease-in-out infinite; }
 .animate-float-fast { animation: floatFast 4s ease-in-out infinite; }
 .animate-glow-pulse { animation: glowPulse 4s ease-in-out infinite; }
+
+/* Error Page Geometric Shape Animations */
+@keyframes shapeFloat {
+  0%, 100% { transform: translateY(0px) rotate(var(--rotate, 45deg)); }
+  50% { transform: translateY(-8px) rotate(calc(var(--rotate, 45deg) + 3deg)); }
+}
+
+@keyframes shapePulse {
+  0%, 100% { opacity: 0.7; transform: scale(1) rotate(var(--rotate, 45deg)); }
+  50% { opacity: 0.9; transform: scale(1.05) rotate(calc(var(--rotate, 45deg) + 2deg)); }
+}
+
+@keyframes shimmerLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shape-float { animation: shapeFloat 6s ease-in-out infinite; }
+.animate-shape-pulse { animation: shapePulse 4s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
