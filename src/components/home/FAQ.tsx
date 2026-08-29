@@ -21,7 +21,7 @@ const faqItems = [
   },
   {
     question: "Who are the mentors on Mentro?",
-    answer: "Our mentors are industry professionals from top tech companies like Google, Meta, OpenAI, AWS, and Figma. Each mentor is vetted for both their technical expertise and teaching ability to ensure you get the best learning experience.",
+    answer: "Our mentors are experienced practitioners from product, platform, research, and design teams. Each is selected for both technical depth and an ability to teach through practical examples and thoughtful feedback.",
   },
   {
     question: "Can I join as a complete beginner?",
