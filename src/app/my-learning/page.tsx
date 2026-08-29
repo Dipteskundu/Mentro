@@ -10,6 +10,7 @@ import LiveRoomModal from "@/components/dashboard/LiveRoomModal";
 import { useApp } from "@/context/AppContext";
 import { workshops, mentors } from "@/data";
 import { Workshop } from "@/types";
+import { motion, AnimatePresence } from "framer-motion";
 
 type Tab = "upcoming" | "registered" | "saved";
 
@@ -39,14 +40,13 @@ export default function MyLearningPage() {
 
   const { state } = useApp();
 
-  // Find next upcoming workshop registered by user
   const registeredWorkshops = state.registrations
     .map((reg) => workshops.find((w) => w.id === reg.workshopId))
     .filter((w): w is Workshop => Boolean(w))
     .filter((w) => new Date(w.date) >= new Date())
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-  const nextWorkshop = registeredWorkshops[0] || workshops[0]; // Fallback to first workshop if none registered yet
+  const nextWorkshop = registeredWorkshops[0] || workshops[0]; 
   const nextMentor = mentors.find((m) => m.id === nextWorkshop?.mentorId) || mentors[0];
 
   const handleExportCalendar = (workshop: Workshop) => {
@@ -62,190 +62,210 @@ export default function MyLearningPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50/70 dark:bg-slate-950 text-gray-900 dark:text-white transition-colors pb-16">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed top-20 right-5 z-50 px-4 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold rounded-2xl shadow-2xl border border-slate-700 animate-fade-in-up">
-          {toastMessage}
-        </div>
-      )}
+    <main className="min-h-screen bg-gray-50 dark:bg-[#030712] text-gray-900 dark:text-white selection:bg-brand/30 pb-20 overflow-hidden font-sans transition-colors duration-300">
+      
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            className="fixed top-24 right-6 z-50 px-5 py-3.5 bg-white/90 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 text-gray-900 dark:text-white text-sm font-semibold rounded-2xl shadow-2xl shadow-brand/20 flex items-center gap-3"
+          >
+            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            {toastMessage}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Header with Streak & Goal Bar - Premium Glassmorphism Design */}
-        <header className="relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-white/30 dark:border-slate-700/50 shadow-xl shadow-brand/5 space-y-6">
-          {/* Greeting & Streak */}
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-sm font-bold text-brand uppercase tracking-wider">{getGreeting()} 👋</span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/50 dark:to-orange-950/50 border border-amber-200/60 dark:border-amber-800/60 text-amber-700 dark:text-amber-400 text-xs font-extrabold rounded-full shadow-sm shadow-amber-500/10">
-              🔥 4-Day Learning Streak
-            </span>
-          </div>
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-indigo-500/5 dark:bg-indigo-600/10 rounded-full blur-[120px]" />
+        <div className="absolute top-[30%] -right-[10%] w-[40%] h-[60%] bg-brand/5 dark:bg-brand/10 rounded-full blur-[120px]" />
+      </div>
 
-          {/* Title & Subtitle */}
-          <div className="space-y-2">
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              My{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand via-indigo-600 to-purple-600">
-                Learning Hub
-              </span>
-            </h1>
-            <p className="text-sm sm:text-base text-gray-500 dark:text-slate-400 max-w-2xl">
-              Track your weekly momentum, attend live studio workshops, and review saved sessions.
-            </p>
-          </div>
-
-          {/* Weekly Goal Widget - Full Width */}
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-800/80 dark:to-slate-800/50 p-5 rounded-2xl border border-gray-200/60 dark:border-slate-700/60 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-bold text-gray-700 dark:text-slate-300">Weekly Target</span>
-              <span className="text-sm font-extrabold text-brand">3.5 / 5.0 hrs</span>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14 space-y-10">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-4 rounded-[2rem] bg-white/60 dark:bg-gradient-to-b dark:from-white/[0.08] dark:to-white/[0.02] border border-gray-200 dark:border-white/10 shadow-sm p-8 flex flex-col justify-between relative overflow-hidden group backdrop-blur-sm"
+          >
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand via-purple-500 to-indigo-500 opacity-50 group-hover:opacity-100 transition-opacity" />
+            
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-full border border-amber-200 dark:border-amber-500/20 w-fit">
+                🔥 4-Day Learning Streak
+              </div>
+              <div>
+                <p className="text-gray-500 dark:text-white/60 text-sm font-medium uppercase tracking-wider mb-1">{getGreeting()}</p>
+                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight">
+                  Your Learning <br/>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-purple-500 dark:to-purple-400">
+                    Dashboard
+                  </span>
+                </h1>
+              </div>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-              <div className="bg-gradient-to-r from-brand to-purple-600 h-full rounded-full w-[70%] transition-all duration-700 ease-out" />
+
+            <div className="mt-10 bg-gray-100/50 dark:bg-white/5 rounded-2xl p-5 border border-gray-200/50 dark:border-white/5">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm font-medium text-gray-600 dark:text-white/60">Weekly Target</span>
+                <span className="text-sm font-bold text-gray-900 dark:text-white">3.5 / 5.0 hrs</span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-white/10 h-1.5 rounded-full overflow-hidden mb-3">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: "70%" }}
+                  transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+                  className="bg-gradient-to-r from-brand to-purple-500 h-full rounded-full" 
+                />
+              </div>
+              <p className="text-xs text-gray-500 dark:text-white/40 font-medium">1.5 hours remaining to hit your goal 🎉</p>
             </div>
-            <p className="text-xs text-gray-400 dark:text-slate-500">1.5 hours remaining to hit your weekly goal 🎉</p>
-          </div>
-        </header>
+          </motion.div>
 
-        {/* "Up Next" Spotlight Banner - Premium Redesign */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-brand text-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl shadow-brand/20 border border-white/10">
-          {/* Background decorations */}
-          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]" />
-          <div className="absolute -top-16 -right-16 w-56 h-56 bg-brand/30 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Left Content */}
-            <div className="lg:col-span-8 space-y-5">
-              {/* Status Badge & Date */}
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/20 text-emerald-300 text-xs font-bold rounded-full border border-emerald-400/20 backdrop-blur-sm">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  UP NEXT ON YOUR SCHEDULE
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="lg:col-span-8 rounded-[2rem] bg-slate-900 border border-gray-200 dark:border-white/10 overflow-hidden relative shadow-sm dark:shadow-none"
+          >
+            <Image 
+              src={nextWorkshop?.imageUrl || "/images/mentorship-hero.jpg"} 
+              alt="Up Next" 
+              fill 
+              className="object-cover opacity-60 dark:opacity-40 mix-blend-overlay group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/90 to-transparent dark:from-slate-950 dark:via-slate-950/80" />
+            
+            <div className="relative h-full p-8 lg:p-10 flex flex-col justify-center max-w-2xl text-white">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full border border-emerald-500/30">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  UP NEXT
                 </span>
-                <span className="text-sm text-white/60 font-medium">
+                <span className="text-sm text-white/80 dark:text-white/70 font-medium bg-black/40 px-3 py-1 rounded-full backdrop-blur-md">
                   {nextWorkshop ? new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(nextWorkshop.date)) : "No registered session"}
                 </span>
               </div>
 
-              {/* Title */}
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight tracking-tight">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 line-clamp-2">
                 {nextWorkshop ? nextWorkshop.title : "Ready to start your next learning sprint?"}
               </h2>
 
-              {/* Mentor Info */}
-              <div className="flex items-center gap-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/20 shadow-lg">
-                  <Image src={nextMentor.avatar || "/images/mentor-sarah-chen.jpg"} alt={nextMentor.name} fill className="object-cover" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-white">{nextMentor.name}</p>
-                  <p className="text-xs text-white/60">{nextMentor.role} • {nextMentor.company}</p>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-4 mt-auto">
                 <button
                   onClick={() => setActiveLiveRoomWorkshop(nextWorkshop)}
-                  className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-200 flex items-center gap-2"
+                  className="px-6 py-3.5 bg-brand hover:bg-brand-hover text-white font-semibold text-sm rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-all flex items-center gap-2"
                 >
-                  <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                  Join Live Studio Room
+                  Join Live Room
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
                 </button>
-                <button
-                  onClick={() => handleExportCalendar(nextWorkshop)}
-                  className="px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/15 text-white text-sm font-semibold rounded-xl transition-all duration-200 backdrop-blur-sm"
-                >
-                  📅 Add to Calendar (.ics)
-                </button>
+                
                 <Link
                   href={`/workshop/${nextWorkshop.id}`}
-                  className="px-5 py-3 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-sm font-semibold rounded-xl transition-all duration-200"
+                  className="px-6 py-3.5 bg-white/10 hover:bg-white/15 border border-white/20 text-white text-sm font-semibold rounded-xl transition-all backdrop-blur-md"
                 >
-                  View Agenda →
+                  View Agenda
                 </Link>
-              </div>
-            </div>
 
-            {/* Right Visual Image */}
-            <div className="lg:col-span-4 hidden lg:block">
-              <div className="relative w-full h-52 rounded-2xl overflow-hidden ring-2 ring-white/10 shadow-2xl">
-                <Image src={nextWorkshop.imageUrl} alt={nextWorkshop.title} fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-5">
-                  <span className="text-sm font-bold text-white flex items-center gap-2">
-                    ⏱️ {nextWorkshop.duration} Live Session
-                  </span>
+                <div className="ml-auto hidden sm:flex items-center gap-3 bg-black/30 p-2 pr-4 rounded-full backdrop-blur-md border border-white/10">
+                   <div className="relative w-8 h-8 rounded-full overflow-hidden ring-2 ring-brand/50">
+                     <Image src={nextMentor.avatar || "/images/mentor-sarah-chen.jpg"} alt={nextMentor.name} fill className="object-cover" />
+                   </div>
+                   <div className="text-xs">
+                     <p className="font-bold text-white leading-tight">{nextMentor.name}</p>
+                     <p className="text-white/60">{nextMentor.company}</p>
+                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </motion.div>
+        </div>
 
-        {/* 4-Card Metric Strip */}
-        <section className="grid grid-cols-2 sm:grid-cols-4 gap-4" aria-label="Learning Metrics">
-          <div className="p-5 bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm space-y-1">
-            <p className="text-xs font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">Registered</p>
-            <p className="text-2xl font-extrabold text-gray-900 dark:text-white">{state.registrations.length}</p>
-            <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">Active enrollments</p>
-          </div>
-          <div className="p-5 bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm space-y-1">
-            <p className="text-xs font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">Saved Sessions</p>
-            <p className="text-2xl font-extrabold text-gray-900 dark:text-white">{state.savedSessions.length}</p>
-            <p className="text-[11px] text-brand font-semibold">Bookmarked for later</p>
-          </div>
-          <div className="p-5 bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm space-y-1">
-            <p className="text-xs font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">Hours Learned</p>
-            <p className="text-2xl font-extrabold text-gray-900 dark:text-white">18.5</p>
-            <p className="text-[11px] text-purple-600 dark:text-purple-400 font-semibold">Total time spent</p>
-          </div>
-          <div className="p-5 bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm space-y-1">
-            <p className="text-xs font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">Skill Badges</p>
-            <p className="text-2xl font-extrabold text-gray-900 dark:text-white">3</p>
-            <p className="text-[11px] text-amber-600 dark:text-amber-400 font-semibold">Verified credentials</p>
-          </div>
-        </section>
+        <motion.div 
+           initial={{ opacity: 0, y: 20 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.5 }}
+           className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+        >
+          {[
+            { label: "Active Enrollments", value: state.registrations.length, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-100 dark:bg-emerald-500/10" },
+            { label: "Saved Sessions", value: state.savedSessions.length, color: "text-brand", bg: "bg-brand/10 dark:bg-brand/10" },
+            { label: "Hours Learned", value: "18.5", color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-100 dark:bg-purple-500/10" },
+            { label: "Skill Badges", value: "3", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-500/10" },
+          ].map((stat, i) => (
+            <div key={i} className="bg-white/60 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] p-5 rounded-2xl flex items-center justify-between group hover:bg-white/80 dark:hover:bg-white/[0.05] transition-colors shadow-sm dark:shadow-none backdrop-blur-sm">
+              <div>
+                <p className="text-xs font-medium text-gray-500 dark:text-white/50 uppercase tracking-wider mb-1">{stat.label}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
+              </div>
+              <div className={`w-10 h-10 rounded-full ${stat.bg} flex items-center justify-center`}>
+                 <span className={`text-lg font-bold ${stat.color}`}>+</span>
+              </div>
+            </div>
+          ))}
+        </motion.div>
 
-        {/* Tabs & Search Navigation Toolbar */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm overflow-hidden">
-          <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-            {/* Tabs */}
-            <nav className="flex items-center gap-2 bg-gray-100 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-gray-200/60 dark:border-slate-700/60 w-full sm:w-auto overflow-x-auto" aria-label="Dashboard Tabs">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-xl transition-all whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? "bg-white dark:bg-slate-900 text-brand dark:text-brand-light shadow-sm"
-                      : "text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white"
-                  }`}
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={tab.icon} />
-                  </svg>
-                  {tab.label}
-                </button>
-              ))}
-            </nav>
+        <motion.div 
+           initial={{ opacity: 0, y: 20 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.5, delay: 0.2 }}
+           className="bg-white/60 dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden backdrop-blur-sm shadow-sm dark:shadow-none"
+        >
+          <div className="p-6 lg:px-8 border-b border-gray-200 dark:border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            
+            <div className="flex p-1 bg-gray-100 dark:bg-black/40 rounded-2xl w-full md:w-auto border border-gray-200/50 dark:border-white/5 overflow-x-auto no-scrollbar">
+              {tabs.map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`relative flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-xl transition-all whitespace-nowrap min-w-[140px]
+                      ${isActive ? "text-gray-900 dark:text-white" : "text-gray-500 dark:text-white/50 hover:text-gray-700 dark:hover:text-white/80"}
+                    `}
+                  >
+                    {isActive && (
+                      <motion.div 
+                        layoutId="activeTab" 
+                        className="absolute inset-0 bg-white dark:bg-white/10 rounded-xl border border-gray-200/50 dark:border-white/10 shadow-sm dark:shadow-lg" 
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                    <svg className="w-4 h-4 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={tab.icon} />
+                    </svg>
+                    <span className="relative z-10">{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
 
-            {/* In-Page Search */}
-            <div className="relative w-full sm:w-72">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+            <div className="relative w-full md:w-80">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <svg className="w-4 h-4 text-gray-400 dark:text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
               <input
                 type="text"
-                placeholder="Search my sessions..."
+                placeholder="Search sessions..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand"
+                className="w-full pl-11 pr-4 py-3 bg-white dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all shadow-sm dark:shadow-none"
               />
             </div>
           </div>
 
-          {/* Tab Panes */}
-          <div className="p-6 sm:p-8">
+          <div className="p-6 lg:p-10 min-h-[400px]">
             {activeTab === "upcoming" && (
               <UpcomingSchedule
                 searchQuery={searchQuery}
@@ -267,10 +287,9 @@ export default function MyLearningPage() {
               />
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Interactive Live Room Modal */}
       <LiveRoomModal
         workshop={activeLiveRoomWorkshop}
         onClose={() => setActiveLiveRoomWorkshop(null)}

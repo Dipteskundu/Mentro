@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const roadmaps = [
   {
@@ -59,7 +60,7 @@ export default function LearningRoadmaps() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="max-w-3xl mx-auto text-center mb-16">
+        <ScrollReveal className="max-w-3xl mx-auto text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 text-xs font-bold mb-4">
             <span>🗺️ Structured Learning Paths</span>
           </div>
@@ -69,12 +70,13 @@ export default function LearningRoadmaps() {
           <p className="mt-4 text-slate-600 dark:text-slate-400 text-base sm:text-lg">
             Follow a clear, step-by-step track designed to take you from core concepts to production mastery.
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Roadmaps Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {roadmaps.map((track) => (
-            <div
+          {roadmaps.map((track, index) => (
+            <ScrollReveal
+              delay={index * 0.15}
               key={track.title}
               className="group relative bg-white dark:bg-slate-900/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 backdrop-blur-xl hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between"
             >
@@ -129,7 +131,7 @@ export default function LearningRoadmaps() {
                 </Link>
               </div>
 
-            </div>
+            </ScrollReveal>
           ))}
         </div>
 

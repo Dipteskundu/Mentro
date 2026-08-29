@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { TOPICS } from "@/utils/constants";
 import { workshops, mentors } from "@/data";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export default function HomeHero() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -33,7 +34,7 @@ export default function HomeHero() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="space-y-6 text-center">
+        <ScrollReveal delay={0.1} className="space-y-6 text-center">
           {/* Main Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-[1.12]">
             Master Real-World Tech Skills with{" "}
@@ -108,10 +109,10 @@ export default function HomeHero() {
               Meet Our Mentors
             </Link>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Quick Topic Explorer Grid */}
-        <div className="mt-14 pt-8 border-t border-gray-200/60 dark:border-slate-800/80">
+        <ScrollReveal delay={0.3} className="mt-14 pt-8 border-t border-gray-200/60 dark:border-slate-800/80">
           <p className="text-xs font-bold tracking-wider text-gray-400 dark:text-slate-400 uppercase mb-4 text-center">
             Explore Workshops by Topic Track
           </p>
@@ -130,7 +131,7 @@ export default function HomeHero() {
               </Link>
             ))}
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

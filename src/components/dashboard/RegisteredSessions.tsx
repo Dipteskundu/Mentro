@@ -105,9 +105,6 @@ export default function RegisteredSessions({
         <SessionCard
           key={registration.id}
           workshop={workshop}
-          actionLabel="Cancel Seat"
-          onAction={() => handleCancel(workshop.id)}
-          actionVariant="danger"
           onJoinRoom={onJoinRoom}
           onExportCalendar={onExportCalendar}
           meta={`Enrolled on ${new Intl.DateTimeFormat("en-US", {

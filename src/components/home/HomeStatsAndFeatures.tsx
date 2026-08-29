@@ -1,5 +1,7 @@
 "use client";
 
+import ScrollReveal from "@/components/ui/ScrollReveal";
+
 const stats = [
   {
     label: "Live Workshops",
@@ -62,9 +64,10 @@ export default function HomeStatsAndFeatures() {
         
         {/* Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-20">
-          {stats.map((stat) => (
-            <div
+          {stats.map((stat, i) => (
+            <ScrollReveal
               key={stat.label}
+              delay={i * 0.1}
               className="text-center p-6 rounded-3xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 backdrop-blur-xl hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
             >
               <div className={`w-12 h-12 ${stat.bg} rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-sm`}>
@@ -78,12 +81,12 @@ export default function HomeStatsAndFeatures() {
               <p className="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">
                 {stat.label}
               </p>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
 
         {/* Section Header */}
-        <div className="max-w-3xl mx-auto text-center mb-16">
+        <ScrollReveal delay={0.2} className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-xs sm:text-sm font-bold tracking-wider text-indigo-600 dark:text-indigo-400 uppercase mb-3">
             Why Choose Mentro
           </h2>
@@ -93,13 +96,14 @@ export default function HomeStatsAndFeatures() {
           <p className="mt-4 text-slate-600 dark:text-slate-400 text-base sm:text-lg">
             Everything you need to level up your engineering skills with clarity and confidence.
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feat) => (
-            <div
+          {features.map((feat, i) => (
+            <ScrollReveal
               key={feat.title}
+              delay={i * 0.15}
               className="group relative bg-slate-50/80 dark:bg-slate-900/60 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 backdrop-blur-xl hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between"
             >
               <div>
@@ -126,7 +130,7 @@ export default function HomeStatsAndFeatures() {
                 <span>Learn how it works</span>
                 <span className="group-hover:translate-x-1 transition-transform">→</span>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
 

@@ -103,9 +103,6 @@ export default function SavedSessions({
         <SessionCard
           key={saved.workshopId}
           workshop={workshop}
-          actionLabel="Remove Saved"
-          onAction={() => handleRemove(workshop.id)}
-          actionVariant="outline"
           onExportCalendar={onExportCalendar}
           meta={`Saved on ${new Intl.DateTimeFormat("en-US", {
             month: "short",

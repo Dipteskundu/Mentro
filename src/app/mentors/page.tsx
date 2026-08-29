@@ -11,6 +11,7 @@ import MentorProfileModal from "@/components/mentors/MentorProfileModal";
 import BookMentorshipModal from "@/components/mentors/BookMentorshipModal";
 import BecomeMentorModal from "@/components/mentors/BecomeMentorModal";
 import MentorSpotlightCarousel from "@/components/mentors/MentorSpotlightCarousel";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const expertiseFilters = [
   "All",
@@ -174,7 +175,7 @@ export default function MentorsPage() {
         ))}
 
         {/* Main Hero Content */}
-        <div className="relative z-20 max-w-3xl mx-auto px-4 text-center">
+        <ScrollReveal className="relative z-20 max-w-3xl mx-auto px-4 text-center">
           {/* Glass badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 backdrop-blur-xl bg-brand-light/80 dark:bg-white/[0.08] border border-brand/20 dark:border-white/[0.15] rounded-full mb-6 shadow-md shadow-brand/5">
             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
@@ -236,7 +237,7 @@ export default function MentorsPage() {
               </div>
             ))}
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
@@ -433,7 +434,7 @@ export default function MentorsPage() {
           ═══════════════════════════════════════════════════════════ */}
       <section className="py-14 sm:py-16 bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-white relative overflow-hidden border-t border-gray-200/80 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-12">
+          <ScrollReveal className="text-center mb-12">
             <span className="px-3 py-1 bg-brand-light dark:bg-brand/20 border border-brand/20 rounded-full text-xs font-semibold text-brand dark:text-brand-light">
               Mentorship Ecosystem
             </span>
@@ -443,13 +444,14 @@ export default function MentorsPage() {
             <p className="text-gray-500 dark:text-slate-400 mt-2 max-w-xl mx-auto text-xs sm:text-sm">
               Join a community of senior engineers and leaders driving career transformation worldwide
             </p>
-          </div>
+          </ScrollReveal>
 
           {/* Key Value Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-            {values.map((value) => (
-              <div
+            {values.map((value, i) => (
+              <ScrollReveal
                 key={value.title}
+                delay={i * 0.15}
                 className="group bg-white dark:bg-slate-900/90 p-6 sm:p-8 rounded-3xl border border-gray-200/80 dark:border-slate-800 hover:border-brand/40 transition-all duration-300 hover:-translate-y-1 shadow-md hover:shadow-xl"
               >
                 <div className={`w-12 h-12 bg-gradient-to-br ${value.gradient} rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}>
@@ -459,7 +461,7 @@ export default function MentorsPage() {
                 </div>
                 <h3 className="mt-5 text-base sm:text-lg font-bold text-gray-900 dark:text-white">{value.title}</h3>
                 <p className="mt-2 text-xs sm:text-sm text-gray-600 dark:text-slate-300 leading-relaxed">{value.description}</p>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
 
@@ -490,13 +492,13 @@ export default function MentorsPage() {
           ═══════════════════════════════════════════════════════════ */}
       <section className="py-14 sm:py-16 bg-white dark:bg-slate-900 transition-colors border-b border-gray-100 dark:border-slate-800">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
+          <ScrollReveal className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
               Frequently Asked{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-brand-hover">Questions</span>
             </h2>
             <p className="text-gray-500 dark:text-slate-400 mt-1.5 text-xs sm:text-sm">Everything you need to know about our mentors and 1-on-1 sessions</p>
-          </div>
+          </ScrollReveal>
 
           {/* Category Tabs */}
           <div className="flex flex-wrap justify-center gap-1.5 mb-6">
@@ -552,7 +554,7 @@ export default function MentorsPage() {
           ═══════════════════════════════════════════════════════════ */}
       <section className="py-14 sm:py-16 bg-gray-50/60 dark:bg-slate-950 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-xl border border-gray-200/80 dark:border-slate-800 text-gray-900 dark:text-white transition-colors">
+          <ScrollReveal delay={0.2} className="relative bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-xl border border-gray-200/80 dark:border-slate-800 text-gray-900 dark:text-white transition-colors">
             <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="p-8 sm:p-10 lg:p-12 flex flex-col justify-center space-y-4">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-light dark:bg-brand/20 border border-brand/20 rounded-full text-xs font-semibold text-brand dark:text-brand-light w-fit">
@@ -607,7 +609,7 @@ export default function MentorsPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
