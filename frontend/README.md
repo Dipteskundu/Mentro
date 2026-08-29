@@ -37,23 +37,24 @@
 
 ## Project Overview
 
-**Mentro** হলো একটি আধুনিক ওয়েব প্ল্যাটফর্ম যা ambitious learnersদের active industry leaders, staff engineers, lead architects এবং design directorsদের সাথে connect করার জন্য তৈরি করা হয়েছে। এই প্রজেক্টটি hands-on learning experiences এর মাধ্যমে learnersদের engineering career তে accelerate করতে সাহায্য করে।
+**Mentro** is a modern web platform designed to connect ambitious learners with active industry leaders, staff engineers, lead architects, and design directors. The project aims to accelerate learners' engineering careers through hands-on learning experiences guided by experienced professionals.
 
 The platform offers live studio workshops, 1-on-1 code reviews, hands-on capstone projects, and mentorship sessions guided by experienced industry professionals. Users can discover workshops by topic, level, and session type, connect with mentors, manage their learning journey through a personalized dashboard, and track their progress — all in a beautifully designed, responsive interface with dark mode support.
 
 ### Problem Statement
 
-বর্তমানে tech learning landscape এ একটি significant gap রয়েছে — learnersরা theoretical knowledge পায় কিন্তু real-world, hands-on experience পায় না। Mentro এই gap কোনো করতে চায় industry professionalsদের সাথে direct connection এর মাধ্যমে।
+In today's tech learning landscape, there is a significant gap — learners acquire theoretical knowledge but lack real-world, hands-on experience. The current educational ecosystem often fails to bridge the divide between academic learning and industry requirements. Students graduate with certifications but struggle to apply their knowledge in practical, professional environments.
 
 ### Our Solution
 
-Mentro একটি comprehensive platform প্রদান করে যাতে:
+Mentro provides a comprehensive platform that addresses these challenges:
 
-- Learnersরা diverse workshops discover করতে পারে different topics এ
-- Expert mentorsদের সাথে 1-on-1 mentorship sessions book করতে পারে
-- Workshop registration করতে পারে real-time conflict detection সহ
-- Personal dashboard এ তাদের entire learning journey track করতে পারে
-- Dark mode support পায় for comfortable viewing in any environment
+- **Workshop Discovery**: Learners can explore diverse workshops across different topics, from Web Development and AI/ML to Cloud Computing and UI/UX Design
+- **Mentor Connection**: Book 1-on-1 mentorship sessions with expert mentors who are active industry professionals
+- **Smart Registration**: Register for workshops with real-time conflict detection to prevent scheduling overlaps
+- **Learning Dashboard**: Track your entire learning journey — upcoming sessions, registered workshops, and saved content — all in one place
+- **Accessibility**: Full WCAG 2.1 AA compliance ensuring the platform is usable by everyone, including screen reader users and keyboard navigators
+- **Dark Mode**: Cinematic theme transitions with 5 visual effects for comfortable viewing in any environment
 
 ---
 
