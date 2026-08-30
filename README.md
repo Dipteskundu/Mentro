@@ -11,7 +11,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)](https://typescriptlang.org)
 
-[Live Demo](https://mentro.vercel.app) | [Report Bug](https://github.com/Dipteskundu/Mentro/issues) | [Request Feature](https://github.com/Dipteskundu/Mentro/issues)
+[Live Demo](https://mentro-lake.vercel.app) | [Report Bug](https://github.com/Dipteskundu/Mentro/issues) | [Request Feature](https://github.com/Dipteskundu/Mentro/issues)
 
 </div>
 
@@ -37,23 +37,23 @@
 
 ## Project Overview
 
-**Mentro** হলো একটি আধুনিক ওয়েব প্ল্যাটফর্ম যা ambitious learnersদের active industry leaders, staff engineers, lead architects এবং design directorsদের সাথে connect করার জন্য তৈরি করা হয়েছে। এই প্রজেক্টটি hands-on learning experiences এর মাধ্যমে learnersদের engineering career তে accelerate করতে সাহায্য করে।
+**Mentro** is a modern web platform designed to connect ambitious learners with active industry leaders, staff engineers, lead architects, and design directors. This project helps learners accelerate their engineering careers through hands-on learning experiences.
 
 The platform offers live studio workshops, 1-on-1 code reviews, hands-on capstone projects, and mentorship sessions guided by experienced industry professionals. Users can discover workshops by topic, level, and session type, connect with mentors, manage their learning journey through a personalized dashboard, and track their progress — all in a beautifully designed, responsive interface with dark mode support.
 
 ### Problem Statement
 
-বর্তমানে tech learning landscape এ একটি significant gap রয়েছে — learnersরা theoretical knowledge পায় কিন্তু real-world, hands-on experience পায় না। Mentro এই gap কোনো করতে চায় industry professionalsদের সাথে direct connection এর মাধ্যমে।
+Currently, there is a significant gap in the tech learning landscape — learners gain theoretical knowledge but lack real-world, hands-on experience. Mentro aims to bridge this gap through direct connections with industry professionals.
 
 ### Our Solution
 
-Mentro একটি comprehensive platform প্রদান করে যাতে:
+Mentro provides a comprehensive platform where:
 
-- Learnersরা diverse workshops discover করতে পারে different topics এ
-- Expert mentorsদের সাথে 1-on-1 mentorship sessions book করতে পারে
-- Workshop registration করতে পারে real-time conflict detection সহ
-- Personal dashboard এ তাদের entire learning journey track করতে পারে
-- Dark mode support পায় for comfortable viewing in any environment
+- Learners can discover diverse workshops across different topics
+- Book 1-on-1 mentorship sessions with expert mentors
+- Register for workshops with real-time conflict detection
+- Track their entire learning journey on a personal dashboard
+- Enjoy dark mode support for comfortable viewing in any environment
 
 ---
 
@@ -109,6 +109,7 @@ Mentro একটি comprehensive platform প্রদান করে যা�
 |---------|:-------:|---------|
 | Framer Motion | 13.1.1 | Animations and transitions |
 | next-themes | 0.4.6 | Dark/light mode management |
+| React Context + useReducer | Built-in | Global state management (registrations, saved sessions, theme) with localStorage persistence |
 | Geist Font | - | Modern typography |
 
 ### Development Tools
@@ -242,124 +243,83 @@ frontend/
 
 ## Problems Faced & Solutions
 
-### Technical Challenges
+### 1. State Management & Persistence Without a Backend
 
-<table>
-<tr><th>Problem</th><th>Root Cause</th><th>Solution</th><th>Status</th></tr>
-<tr>
-<td><strong>Theme transition stuck on rapid clicks</strong></td>
-<td>Multiple overlapping <code>startViewTransition</code> calls corrupt browser state</td>
-<td>Added <code>isTransitioning</code> guard with 100ms cooldown and timeout fallback</td>
-<td>✅ Fixed</td>
-</tr>
-<tr>
-<td><strong>Animation not smooth during theme switch</strong></td>
-<td><code>animation: none</code> on view-transition pseudo-elements prevented proper crossfade</td>
-<td>Replaced with <code>vt-fade-out</code>/<code>vt-fade-in</code> keyframes + optimized cubic-bezier easing</td>
-<td>✅ Fixed</td>
-</tr>
-<tr>
-<td><strong>Hydration mismatch with next-themes</strong></td>
-<td>Server renders with light theme, client may have dark theme from localStorage</td>
-<td>Added <code>suppressHydrationWarning</code> on <code>&lt;html&gt;</code> + mounted state check in ThemeToggle</td>
-<td>✅ Fixed</td>
-</tr>
-<tr>
-<td><strong>Mobile menu accessibility</strong></td>
-<td>Basic dropdown without focus management or ARIA attributes</td>
-<td>Implemented full WCAG 2.1 AA: focus trapping, Escape key, <code>aria-expanded</code>, <code>role="dialog"</code></td>
-<td>✅ Fixed</td>
-</tr>
-<tr>
-<td><strong>Workshop time conflicts</strong></td>
-<td>No validation for overlapping workshop registrations</td>
-<td>Built <code>conflictDetection.ts</code> utility checking date/time overlaps before registration</td>
-<td>✅ Fixed</td>
-</tr>
-<tr>
-<td><strong>Modal scroll lock</strong></td>
-<td>Body scrolls when modal is open on mobile</td>
-<td>Added <code>document.body.style.overflow</code> management in modal open/close lifecycle</td>
-<td>✅ Fixed</td>
-</tr>
-<tr>
-<td><strong>Dark mode CSS specificity</strong></td>
-<td>Tailwind v4 changed dark mode configuration approach</td>
-<td>Used <code>@variant dark (&:is(.dark *))</code> pattern with CSS custom properties</td>
-<td>✅ Fixed</td>
-</tr>
-<tr>
-<td><strong>Tailwind v4 migration</strong></td>
-<td>From <code>@tailwind</code> directives to new <code>@import</code> syntax</td>
-<td>Migrated to <code>@import "tailwindcss"</code> + <code>@theme inline</code> block for custom values</td>
-<td>✅ Fixed</td>
-</tr>
-</table>
+**The Problem:**
+Mentro has no server-side storage. All user state — workshop registrations, saved sessions, and theme preference — must persist across browser sessions using only `localStorage`. This creates two hard challenges:
 
-### Problem-Solution Flow
+- **Hydration mismatch:** Next.js server renders with a default light theme, but the client may have `"dark"` stored in `localStorage`. When React hydrates, the mismatch between server HTML and client state causes warnings and a visible flash of the wrong theme.
+- **Idempotent state mutations:** Users can rapidly click "Register" or "Save" — the reducer must prevent duplicate entries without blocking legitimate actions.
 
-```
-Problem: Theme transition stuck
-    ↓
-Root Cause: No guard against rapid clicks
-    ↓
-Solution: isTransitioning flag + timeout fallback
-    ↓
-Result: Smooth, non-blocking transitions
+**The Solution:**
+
+```typescript
+// Hydration-safe pattern (AppContext.tsx)
+useEffect(() => {
+  const saved = localStorage.getItem("Mentro-state");
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    dispatch({ type: "SET_THEME", payload: parsed.theme });
+  }
+}, []);
+
+// Idempotent reducer
+case "SAVE_WORKSHOP":
+  if (state.savedSessions.some(s => s.workshopId === action.payload.workshopId))
+    return state; // no-op, already saved
+  return { ...state, savedSessions: [...state.savedSessions, newSession] };
 ```
 
-```
-Problem: Animation not smooth
-    ↓
-Root Cause: animation:none prevented crossfade
-    ↓
-Solution: Fade animations + optimized easing
-    ↓
-Result: 60fps GPU-accelerated transitions
-```
+- Added `suppressHydrationWarning` on `<html>` to prevent Next.js from flagging the server/client mismatch
+- Theme sync: `document.documentElement.classList.toggle("dark", ...)` applied in a separate `useEffect` so the DOM updates immediately when reducer state changes
+- Write-through persistence: every dispatch serializes full state to `localStorage` via a dependency-tracking `useEffect`
 
----
+### 2. Multi-Dimensional Filter Pipeline with Live Facet Counts
 
-## Dark Mode Implementation
+**The Problem:**
+The Explore page requires 5 independent filter dimensions (text search across titles AND mentor names, category multi-select, level multi-select, price range, and rating threshold) to AND-combine in real time — while simultaneously showing accurate facet counts (how many workshops match each category/level/rating) that don't change as filters narrow results. All of this runs client-side with no API.
 
-### Architecture
+**The Solution:**
+
+Built a dependent `useMemo` pipeline that chains four computed values:
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    Theme Toggle                         │
-│                        ↓                                │
-│              useThemeTransition hook                    │
-│                        ↓                                │
-│         ┌─────────────────────────────┐                 │
-│         │  1. Guard check             │                 │
-│         │  2. Get click coordinates   │                 │
-│         │  3. Start View Transition   │                 │
-│         │  4. flushSync(setTheme)     │                 │
-│         │  5. Animate effect          │                 │
-│         │  6. Wait for finished       │                 │
-│         └─────────────────────────────┘                 │
-│                        ↓                                │
-│              ThemeProvider (next-themes)                │
-│                        ↓                                │
-│           <html class="dark"> toggle                   │
-│                        ↓                                │
-│         CSS variables update instantly                  │
-│                        ↓                                │
-│         View Transition captures snapshots              │
-│                        ↓                                │
-│         Clip-path animation reveals new theme           │
-└─────────────────────────────────────────────────────────┘
+filteredWorkshops → sortedWorkshops → paginatedWorkshops → facetCounts
 ```
 
-### Transition Effects
+- **Text search** joins workshops with the mentors array on every keystroke (`O(N×M)`) to match mentor names — acceptable for the dataset size but requires careful memoization
+- **Facet counts** are computed from the **unfiltered** dataset so they always reflect total available options, not current filter state
+- **Automatic page reset** — any filter or sort change resets `currentPage` to 1 to prevent landing on an empty page
+- **Responsive filter layout** — the same `WorkshopFilters` component renders as a sticky sidebar on desktop and a bottom sheet (`max-h-[85vh]` with scroll) on mobile, with active filter chips for individual removal
 
-| Effect | Visual | Duration | Easing |
-|--------|--------|:--------:|--------|
-| **Circular** | Circle expands from click point | 600ms | `cubic-bezier(0.4, 0, 0.2, 1)` |
-| **Diagonal** | Wipe from top-left corner | 600ms | `cubic-bezier(0.16, 1, 0.3, 1)` |
-| **Curtain** | Drop from top like a curtain | 600ms | `cubic-bezier(0.33, 1, 0.68, 1)` |
-| **Radial Burst** | Circle with glow bloom | 600ms | `cubic-bezier(0.16, 1, 0.3, 1)` |
-| **Ink Bleed** | Organic spread from center | 720ms | `cubic-bezier(0.22, 1, 0.36, 1)` |
+### 3. Browser-Native Cinematic Theme Transitions
+
+**The Problem:**
+The app uses the cutting-edge View Transitions API (`document.startViewTransition`) to create cinematic theme transitions (circular ripple, diagonal wipe, radial burst, etc.). This API requires the React state update to happen **synchronously** inside the transition callback — but React 19 batches state updates by default, causing the transition to capture the wrong frame. Additionally, rapid toggles corrupt the browser's internal transition state.
+
+**The Solution:**
+
+```typescript
+// useThemeTransition.ts
+const transition = document.startViewTransition(() => {
+  flushSync(() => { setTheme(newTheme); }); // force synchronous commit
+});
+
+// Race condition guard
+let isTransitioning = false;
+// ... guard check before starting, 100ms cooldown in finally block
+
+// Timeout fallback
+Promise.race([
+  transition.finished,
+  new Promise(resolve => setTimeout(resolve, duration + 200))
+]);
+```
+
+- **`flushSync`** forces React to commit the state update synchronously so the View Transitions API captures the correct before/after frames
+- **Module-level `isTransitioning` flag** with 100ms cooldown prevents overlapping transitions from corrupting browser state
+- **5 animation effects** using Web Animations API on `::view-transition-new(root)` pseudo-element — clip-path circles, polygons, and inset animations
+- **Graceful degradation:** checks `document.startViewTransition` existence and falls back to instant theme switch; respects `prefers-reduced-motion` media query
 
 ### Browser Support
 
@@ -566,15 +526,7 @@ interface Mentor {
 
 ---
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 <div align="center">
-
-**Built with ❤️ for curious engineers**
 
 [⬆ Back to Top](#mentro)
 
